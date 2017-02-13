@@ -40,6 +40,7 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 	        ps.executeUpdate();
 	        ps.close();
 	        con.close();
+	        System.out.println("1231455312313");
 		 PrintWriter pw = resp.getWriter();   
 		  pw.println("<html><body><h1>"+"registered your name= "+name+"</h1></body></html>");
 
