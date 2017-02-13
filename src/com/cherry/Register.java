@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/reg")
 public class Register extends HttpServlet
 {
-	static String pass;
-	static String name;
  
  @Override
 protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
@@ -25,8 +23,9 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 	 
 		
 	 System.out.println("Servlet");
-		name=req.getParameter("n1");
-		pass=req.getParameter("a1");	
+	 
+		 String name=req.getParameter("n1");
+	 String	pass=req.getParameter("a1");	
 		 String sql="insert into patientapp.register values(?,?)";
 		try 
 		{
