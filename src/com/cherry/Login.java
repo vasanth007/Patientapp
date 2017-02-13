@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import com.cherry1.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +20,9 @@ public class Login extends HttpServlet{
 	
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		
+		
+		PreparedStatement ps=null;
+		Connection con=null;
 		String usr="";
 		String user = request.getParameter("n1");
 		String pass = request.getParameter("p1");
@@ -31,11 +34,8 @@ public class Login extends HttpServlet{
 		  PrintWriter pw = response.getWriter();
 			try 
 			{
-				Class.forName("com.mysql.jdbc.Driver");
-				System.out.println("jdbc code starts");
-				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=dinga");
-				System.out.println("connected");
-				PreparedStatement ps = con.prepareStatement(qry);
+				con = Jdbc.connect();
+				 ps = con.prepareStatement(qry);
 				System.out.println("platform");
 				ps.setString(1, user);
 				ps.setString(2,pass);
@@ -64,6 +64,15 @@ public class Login extends HttpServlet{
 			catch(SQLException e)
 			{
 				e.printStackTrace();
+			}
+			finally
+			{
+				try {
+					Close.CloseCon(con,ps);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		}

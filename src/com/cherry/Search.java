@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cherry1.Close;
+import com.cherry1.Jdbc;
+
 @WebServlet("/ser")
 public class Search extends HttpServlet
 {
@@ -23,17 +26,17 @@ public class Search extends HttpServlet
 		    HttpServletResponse response)
 		        throws ServletException, IOException 
 	{
+		Connection con=null;
+	PreparedStatement ps=null;
 	
 		String name = request.getParameter("t1");
 		String qry="select * from patientapp.patient_details where pname=?";
 		  PrintWriter pw = response.getWriter();
 			try 
 			{
-				Class.forName("com.mysql.jdbc.Driver");
-				System.out.println("jdbc code starts");
-				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=dinga");
+				con = Jdbc.connect();
 				System.out.println("connected");
-				PreparedStatement ps = con.prepareStatement(qry);
+				ps = con.prepareStatement(qry);
 				System.out.println("platform");
 				ps.setString(1, name);
 				System.out.println("aaaa");
@@ -44,7 +47,7 @@ public class Search extends HttpServlet
 				int age=rs.getInt("age");
 				String disease=rs.getString("disease");
 				Date date = rs.getDate("date_of_check");
-				  pw.println("<html><body><h1>"+"name="+ usr +"age="+age+"disease="+disease+"date_of_check="+date+" "+"</h1></body></html>");
+				  pw.println("<html><body><h1>"+"name="+ usr +" "+"age="+age+" "+"disease="+disease+" "+"date_of_check="+date+" "+"</h1></body></html>");
 				 // pw.println("<html><body><h1>enter details <a href='/Patientapp/patdetails.html'> here</a></h1></body></html>");
 				}
 				else
@@ -62,6 +65,15 @@ public class Search extends HttpServlet
 			catch(SQLException e)
 			{
 				e.printStackTrace();
+			}
+			finally
+			{
+				try {
+					Close.CloseCon(con,ps);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		}

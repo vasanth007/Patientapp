@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import com.cherry1.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +21,8 @@ public class Register extends HttpServlet
 protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
  {
 	 
+		Connection con=null;
+		PreparedStatement ps=null;
 		
 	 System.out.println("Servlet");
 	 
@@ -29,11 +31,9 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 		 String sql="insert into patientapp.register values(?,?)";
 		try 
 		{
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("jdbc code starts");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=dinga");
+			con = Jdbc.connect();
 			System.out.println("connected");
-			PreparedStatement ps = con.prepareStatement(sql);
+			ps = con.prepareStatement(sql);
 			System.out.println("platform");
 			ps.setString(1,name);
 			ps.setString(2,pass);
@@ -54,6 +54,15 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				Close.CloseCon(con,ps);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 }
