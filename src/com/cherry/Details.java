@@ -41,6 +41,7 @@ public class Details extends HttpServlet
 			ps.setString(3,disease);
 			ps.setString(4,date);
 	        ps.executeUpdate();
+	        System.out.println("1231455312313");
 		 PrintWriter pw = resp.getWriter();   
 		  pw.println("<html><body><h1>"+"details stored your name= "+name+"</h1></body></html>");
 		  pw.println("<html><body><h1>login <a href='/Patientapp/CheckDetails.html'> here</a></h1></body></html>");
